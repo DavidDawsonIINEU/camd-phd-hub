@@ -54,7 +54,7 @@ const SCREEN_ICONS = {
   milestones: "◈",
   calendar: "◷",
   courses: "◻",
-  deadlines: "◉",
+  todos: "✓",
   funding: "◇",
   contacts: "◎",
 };
@@ -63,12 +63,13 @@ const SCREEN_ICONS = {
 // Update once per semester for drop/registration dates; milestone dates are fixed year to year.
 // Only set: label, date, screen. Icon is automatic.
 const ALERTS = [
-  { label: "Annual Review Due",          date: "2026-04-15", screen: "deadlines" },
-  { label: "Last Day to Withdraw (W)",   date: "2026-04-19", screen: "courses" },
-  { label: "M5 Proposal Defense",        date: "2026-04-30", screen: "milestones" },
-  { label: "PD Funds Request",           date: "2026-05-15", screen: "deadlines" },
-  { label: "M2 Co-Advisor Declaration",  date: "2026-08-31", screen: "milestones" },
-  { label: "M3 Qualifying Exam",         date: "2026-11-30", screen: "milestones" },
+  { label: "Summer Project Rankings",   date: "2026-03-31", screen: "todos" },
+  { label: "Annual Review Due",         date: "2026-04-15", screen: "todos" },
+  { label: "Last Day to Withdraw (W)",  date: "2026-04-19", screen: "courses" },
+  { label: "M5 Proposal Defense",       date: "2026-04-30", screen: "milestones" },
+  { label: "PD Funds Request",          date: "2026-05-15", screen: "todos" },
+  { label: "M2 Co-Advisor Declaration", date: "2026-08-31", screen: "milestones" },
+  { label: "M3 Qualifying Exam",        date: "2026-11-30", screen: "milestones" },
 ].map(a => ({ ...a, icon: SCREEN_ICONS[a.screen] || "◦" }))
  .filter(a => daysUntil(a.date) >= 0)
  .sort((a, b) => daysUntil(a.date) - daysUntil(b.date));
@@ -88,6 +89,84 @@ const DROP_DATES = [
     dateISO: "2026-04-19",
     detail: "Last day to withdraw from a full-semester spring course. A W grade appears on your transcript but does not affect GPA. You remain responsible for 100% of tuition. Withdraw via the Student Hub. Note: a W does count toward attempted credits and may affect academic standing.",
     source: "Northeastern Academic Calendar 2025–2026",
+  },
+];
+
+// ── Program To-Dos — update each semester. Remove items once deadline passes. ──
+const todos = [
+  {
+    title: "Summer Project Rankings",
+    deadline: "March 31",
+    deadlineISO: "2026-03-31",
+    description: "Submit your summer project and assistantship rankings for the upcoming assignment process.",
+    url: "https://drdawson.sites.northeastern.edu/4804-2/",
+    buttonLabel: "Submit Rankings",
+  },
+  {
+    title: "Annual Review",
+    deadline: "April 15",
+    deadlineISO: "2026-04-15",
+    description: "Complete and submit your self-reflection and portfolio for the annual progress review.",
+    url: "https://forms.office.com/r/Ph7hiAY4JP",
+    buttonLabel: "Open Form",
+  },
+  {
+    title: "CAMD Research Dissemination Proposals",
+    deadline: "March 31",
+    deadlineISO: "2026-03-31",
+    description: "Apply for CAMD research dissemination funding to support the presentation and publication of your research.",
+    url: "https://northeastern.sharepoint.com/sites/CAMDHub/SitePages/Announcements/Call-for-Research-Dissemination-Proposals-from-Faculty-and-Staff.aspx",
+    buttonLabel: "View & Apply",
+  },
+];
+
+// ── Changelog — add new entries at the top ──
+const changelog = [
+  {
+    date: "March 24, 2026",
+    entries: [
+      "Funding tab redesigned — now shows Flex Fellowship and fellowship/grant discovery by research discipline (11 areas)",
+      "Each discipline includes pre-built ProFellow, Google Alerts, Grants.gov, and federal fellowship links",
+      "Google Alerts guide with example queries added as collapsible section within each discipline card",
+      "Assistantship types (SGA/RA/TA) and Professional Development Funds moved to Policies tab",
+      "PhD Network Travel Funds added to Policies tab",
+      "Added Program To-Dos section — time-sensitive action items with deadlines and direct form links",
+      "Redesigned home screen — To-Dos card, simplified navigation, bottom links row",
+      "Added Contacts & Communications section with program communications structure",
+      "Added Changelog",
+      "Bottom nav simplified to Home, To-Dos, Milestones, Calendar",
+      "Corrected Spring 2026 course withdrawal dates",
+      "Added Graduate Catalog link to Policies",
+      "Wired Handbook link to SharePoint document",
+    ],
+  },
+];
+
+// ── Communications structure ──
+const commsChannels = [
+  {
+    channel: "Teams",
+    purpose: "Documents and access centralization",
+    url: "https://teams.microsoft.com/l/team/19%3AwATcDwT4uhLQ4oWXRluYwf1GT1M6WtBU0UF-6h-YSDg1%40thread.tacv2/conversations?groupId=e28261f3-b2e1-4038-a57f-dfcef002c39d&tenantId=a8eec281-aaa3-4dae-ac9b-9a398b9215e7",
+    linkLabel: "Open Teams channel",
+  },
+  {
+    channel: "Slack",
+    purpose: "Social",
+    url: "https://camdphd.slack.com/archives/C03D0KFP8JU",
+    linkLabel: "Open Slack",
+  },
+  {
+    channel: "Email",
+    purpose: "Information — sent bi-weekly (outgoing only)",
+    url: "mailto:camd_idam@northeastern.edu",
+    linkLabel: "camd_idam@northeastern.edu",
+  },
+  {
+    channel: "Outlook",
+    purpose: "Calendar with information",
+    url: "webcal://25livepub.collegenet.com/calendars/Northeastern-Academic-Calendar.ics",
+    linkLabel: "Subscribe to calendar",
   },
 ];
 
@@ -236,25 +315,98 @@ const deadlines = [
   { title: "Assistantship Letter Signing", date: "Before semester start", recurring: true, category: "Funding", detail: "Sign your assistantship letter before the semester begins. Failure to sign = loss of funding. Repeatedly declining assignments can result in permanent funding loss." },
 ];
 
-const fundingData = [
+// ── Fellowship discovery by discipline ──
+const disciplines = [
   {
-    category: "Assistantships", items: [
-      { title: "Student Graduate Assistantship (SGA)", detail: "Guaranteed for up to 5 years (Fall/Spring/Summer). Requires ~20 hrs/week. Paid semi-monthly." },
-      { title: "Research Assistantship (RA)", detail: "Funded by your primary advisor or a project PI. Typically begins Year 1–2." },
-      { title: "Teaching Assistantship (TA)", detail: "Begins in Year 3. Supports course delivery and academic development." },
-    ],
+    id: "games", name: "Games",
+    profellowKeywords: "game design, interactive media, serious games",
+    alertQuery: '"game design" fellowship OR grant doctoral',
+    grantsQuery: "game design research doctoral",
+    federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
+    exampleQueries: ['"game design" fellowship PhD 2026', '"serious games" OR "game studies" doctoral grant', '"interactive media" research fellowship residency'],
   },
   {
-    category: "Professional Development", items: [
-      { title: "$1,000 Annual Professional Development Fund", detail: "Conferences, professional associations, workshops, summer schools. Request by May 15 via Concur." },
-      { title: "PhD Network Travel Funds", detail: "Up to $500 in matching funds to present research. Matching from advisor grants or university/external funding only." },
-    ],
+    id: "xr", name: "Extended Reality (XR)",
+    profellowKeywords: "virtual reality, augmented reality, extended reality, immersive media",
+    alertQuery: '"extended reality" OR "virtual reality" fellowship doctoral grant',
+    grantsQuery: "extended reality augmented virtual research doctoral",
+    federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
+    exampleQueries: ['"extended reality" OR "XR" fellowship doctoral 2026', '"virtual reality" OR "augmented reality" research grant PhD', '"immersive media" fellowship residency funding'],
   },
   {
-    category: "Fellowships & Flex", items: [
-      { title: "Flex Semester", detail: "Funded semester for fieldwork, research, or creative practice. Available after qualifying exam. Apply 2 months before semester.", formLabel: "Flex Fellowship Form", formUrl: FORMS.flexFellowship },
-      { title: "Internal & External Fellowships", detail: "Program must be notified before agreeing to any external fellowship. Critical for international students." },
+    id: "art", name: "Art & Humanities",
+    profellowKeywords: "arts, humanities, creative practice, fine arts",
+    alertQuery: '"arts fellowship" OR "humanities fellowship" doctoral research',
+    grantsQuery: "arts humanities doctoral fellowship research",
+    federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
+    exampleQueries: ['"arts fellowship" OR "humanities fellowship" PhD 2026', '"creative practice" research grant doctoral residency', '"fine arts" OR "visual arts" doctoral fellowship funding'],
+  },
+  {
+    id: "comms", name: "Communication & Journalism",
+    profellowKeywords: "communication, journalism, media studies",
+    alertQuery: '"journalism fellowship" OR "communication research" doctoral grant',
+    grantsQuery: "journalism communication research doctoral fellowship",
+    federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
+    exampleQueries: ['"journalism fellowship" doctoral PhD 2026', '"media studies" OR "communication research" grant funding', '"science communication" fellowship doctoral residency'],
+  },
+  {
+    id: "music", name: "Music",
+    profellowKeywords: "music, musicology, sound studies, composition",
+    alertQuery: '"music research" OR "musicology" fellowship doctoral grant',
+    grantsQuery: "music research doctoral fellowship residency",
+    federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
+    exampleQueries: ['"music fellowship" OR "musicology" doctoral PhD 2026', '"sound studies" OR "music research" grant funding', '"composition" OR "ethnomusicology" fellowship residency'],
+  },
+  {
+    id: "design", name: "Design",
+    profellowKeywords: "design research, design studies, interdisciplinary design",
+    alertQuery: '"design research" fellowship OR grant doctoral',
+    grantsQuery: "design research doctoral fellowship",
+    federal: [
+      { label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" },
+      { label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" },
     ],
+    exampleQueries: ['"design research" fellowship PhD 2026', '"design studies" OR "interdisciplinary design" doctoral grant', '"design thinking" research fellowship residency funding'],
+  },
+  {
+    id: "architecture", name: "Architecture",
+    profellowKeywords: "architecture, built environment, architectural history, urban design",
+    alertQuery: '"architecture fellowship" OR "architectural research" doctoral grant',
+    grantsQuery: "architecture research doctoral fellowship",
+    federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
+    exampleQueries: ['"architecture fellowship" doctoral PhD 2026', '"architectural history" OR "built environment" research grant', '"urban design" OR "spatial research" fellowship residency'],
+  },
+  {
+    id: "hci", name: "Human-Computer Interaction",
+    profellowKeywords: "human-computer interaction, HCI, user experience, interaction design",
+    alertQuery: '"human-computer interaction" OR "HCI" fellowship doctoral grant',
+    grantsQuery: "human computer interaction doctoral fellowship research",
+    federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
+    exampleQueries: ['"human-computer interaction" fellowship PhD 2026', '"HCI" OR "interaction design" doctoral grant funding', '"user experience" OR "UX research" fellowship residency'],
+  },
+  {
+    id: "dataviz", name: "Data Visualization",
+    profellowKeywords: "data visualization, information visualization, visual analytics",
+    alertQuery: '"data visualization" OR "information visualization" fellowship doctoral grant',
+    grantsQuery: "data visualization doctoral fellowship research",
+    federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
+    exampleQueries: ['"data visualization" fellowship doctoral PhD 2026', '"information visualization" OR "visual analytics" grant funding', '"data science" research fellowship residency doctoral'],
+  },
+  {
+    id: "health", name: "Health",
+    profellowKeywords: "health communication, public health, health technology, health humanities",
+    alertQuery: '"health research" fellowship doctoral grant',
+    grantsQuery: "health communication research doctoral fellowship",
+    federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
+    exampleQueries: ['"health communication" OR "public health" fellowship PhD 2026', '"health technology" OR "digital health" doctoral grant funding', '"health humanities" fellowship research residency'],
+  },
+  {
+    id: "theatre", name: "Theatre",
+    profellowKeywords: "theatre, performance studies, dramatic arts",
+    alertQuery: '"theatre research" OR "performance studies" fellowship doctoral grant',
+    grantsQuery: "theatre performance studies doctoral fellowship",
+    federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
+    exampleQueries: ['"theatre fellowship" OR "performance studies" doctoral PhD 2026', '"dramatic arts" OR "theatre research" grant funding', '"live performance" OR "theatre history" fellowship residency'],
   },
 ];
 
@@ -269,9 +421,32 @@ const policies = [
   { title: "GPA & Academic Standing", items: ["Minimum 3.0 cumulative GPA required for candidacy", "No grades lower than B in core courses", "Falling below 3.0 may result in academic probation"] },
   { title: "Advising Changes", items: ["Changing your primary advisor requires a formal request — contact David Dawson II", "Co-advisor changes follow a similar process", "Advisor changes are documented and may affect your timeline"] },
   { title: "Course Waivers & Extra Courses", items: ["Course waivers available for relevant prior work — submit the waiver form", "Extra courses beyond requirements are allowed but may impact GPA", "Auditing courses after completing requirements is encouraged to protect GPA"] },
-  { title: "Assistantship Rules", items: ["Sign your assignment letter before the semester begins — failure to sign = loss of funding", "You cannot request specific assignments, but can discuss interests with your advisor", "Repeatedly declining assignments may result in permanent funding loss"] },
+  {
+    title: "Assistantship Types", items: [
+      "Student Graduate Assistantship (SGA): guaranteed for up to 5 years (Fall/Spring/Summer). Requires ~20 hrs/week. Paid semi-monthly.",
+      "Research Assistantship (RA): funded by your primary advisor or a project PI. Supports faculty research. Typically begins Year 1–2.",
+      "Teaching Assistantship (TA): begins in Year 3. Supports course delivery and academic development. Complete a teaching elective in Years 1–2.",
+      "Experiential PhD or Fellowship: funded by employer, self, or fellowship organization. Notify program before agreeing to any external fellowship.",
+    ],
+  },
+  { title: "Assistantship Rules", items: ["Sign your assignment letter before the semester begins — failure to sign = loss of funding", "You cannot request specific assignments, but can discuss interests with your advisor", "Repeatedly declining assignments may result in permanent funding loss and dismissal review", "SGA funding decisions are determined by the university, program, or primary advisor — you may request a review if your skills don't match the position"] },
   { title: "Probation & Dismissal", items: ["Automatic probation if qualifying exam is not completed by end of fall, Year 3", "Failing the qualifying exam twice results in a dismissal recommendation", "Academic appeals process available — contact David Dawson II"] },
   { title: "Annual Progress Assessment", items: ["Submit self-reflection and portfolio by April 15 each spring", "Assessment covers academic progress, assistantship performance, and milestone completion", "Results inform funding decisions and continuation in the program"] },
+  {
+    title: "Professional Development Funds", items: [
+      "$1,000 available annually (fiscal year July 1–June 30) for conferences, professional associations, workshops, summer schools, and research support.",
+      "Submit requests via the Concur system by May 15 each year. Unspent funds do not roll over.",
+      "Funds may be used for research support with approval.",
+    ],
+  },
+  {
+    title: "PhD Network Travel Funds", items: [
+      "Up to $500 in matching funds to support travel to present research.",
+      "Matching funds must come from an advisor-supported grant, internal university funding, or an external funder.",
+      "Professional Development funds are not acceptable as matching funds.",
+      "Visit the PhD Network funding opportunities page for details.",
+    ],
+  },
 ];
 
 const mockEvents = [
@@ -318,6 +493,9 @@ export default function App() {
   const [expandedPolicy, setExpandedPolicy] = useState(null);
   const [expandedCourse, setExpandedCourse] = useState(null);
   const [expandedDeadline, setExpandedDeadline] = useState(null);
+  const [expandedComms, setExpandedComms] = useState(false);
+  const [expandedDiscipline, setExpandedDiscipline] = useState(null);
+  const [expandedFundingGuide, setExpandedFundingGuide] = useState(null);
   const [showSubscribeSheet, setShowSubscribeSheet] = useState(false);
 
   const goHome = () => { setScreen("home"); setSelected(null); setSelectedDay(null); setSelectedEvent(null); };
@@ -352,34 +530,18 @@ export default function App() {
           </div>
 
           {/* ── COMING UP STRIP ── */}
-          <div style={{ padding: "0 20px 24px" }}>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: COLORS.muted, marginBottom: 10 }}>
-              Coming up
-            </div>
+          <div style={{ padding: "0 20px 20px" }}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: COLORS.muted, marginBottom: 10 }}>Coming up</div>
             <div className="alert-scroll">
               {ALERTS.map((alert, i) => {
                 const days = daysUntil(alert.date);
                 const col = urgencyColor(days);
                 return (
-                  <div key={i} className="tap" onClick={() => goToScreen(alert.screen)} style={{
-                    flexShrink: 0, background: col.bg, borderRadius: 12,
-                    border: `1.5px solid ${col.border}`,
-                    padding: "14px 14px 12px", minWidth: 148, maxWidth: 164,
-                  }}>
-                    {/* Date + countdown row */}
+                  <div key={i} className="tap" onClick={() => goToScreen(alert.screen)} style={{ flexShrink: 0, background: col.bg, borderRadius: 12, border: `1.5px solid ${col.border}`, padding: "14px 14px 12px", minWidth: 148, maxWidth: 164 }}>
                     <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 10, gap: 6 }}>
-                      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 700, color: col.text, letterSpacing: "-0.01em", lineHeight: 1 }}>
-                        {formatShortDate(alert.date)}
-                      </div>
-                      <div style={{
-                        fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 700,
-                        color: col.text, background: "rgba(0,0,0,0.08)",
-                        borderRadius: 5, padding: "2px 6px", whiteSpace: "nowrap", flexShrink: 0,
-                      }}>
-                        {formatDaysLabel(days)}
-                      </div>
+                      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 700, color: col.text, letterSpacing: "-0.01em", lineHeight: 1 }}>{formatShortDate(alert.date)}</div>
+                      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 700, color: col.text, background: "rgba(0,0,0,0.08)", borderRadius: 5, padding: "2px 6px", whiteSpace: "nowrap", flexShrink: 0 }}>{formatDaysLabel(days)}</div>
                     </div>
-                    {/* Icon + label */}
                     <div style={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
                       <div style={{ fontSize: 11, color: col.text, marginTop: 1, flexShrink: 0 }}>{alert.icon}</div>
                       <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 500, color: col.text, lineHeight: 1.35 }}>{alert.label}</div>
@@ -390,42 +552,69 @@ export default function App() {
             </div>
           </div>
 
-          {/* Nav grid */}
-          <div style={{ padding: "0 20px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+          {/* ── TO-DOS EMPHASIZED CARD ── */}
+          <div style={{ padding: "0 20px 14px" }}>
+            <div className="tap" onClick={() => goToScreen("todos")} style={{ background: COLORS.ink, borderRadius: 16, padding: "18px 20px", position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: -20, right: -20, width: 100, height: 100, borderRadius: "50%", background: "rgba(200,64,27,0.18)" }} />
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Action required</div>
+                  <div style={{ fontSize: 20, fontWeight: 600, color: "#FFF", marginBottom: 3 }}>Program To-Dos</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)" }}>{todos.length} items need your attention</div>
+                </div>
+                <div style={{ width: 38, height: 38, borderRadius: "50%", background: COLORS.accent, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: "#FFF" }}>{todos.length}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── 2-COL GRID: Milestones + Calendar ── */}
+          <div style={{ padding: "0 20px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
             {[
               { id: "milestones", label: "Milestones", sub: "6 program milestones", icon: "◈" },
               { id: "calendar", label: "Calendar", sub: "Events & deadlines", icon: "◷" },
-              { id: "courses", label: "Courses", sub: "Registration & drop dates", icon: "◻" },
-              { id: "deadlines", label: "Deadlines", sub: "Annual dates to know", icon: "◉" },
             ].map((item) => (
-              <div key={item.id} className="tap" onClick={() => goToScreen(item.id)} style={{ background: COLORS.surface, borderRadius: 14, padding: "20px 18px", border: `1px solid ${COLORS.border}` }}>
-                <div style={{ fontSize: 22, marginBottom: 8, color: COLORS.accent }}>{item.icon}</div>
-                <div style={{ fontSize: 16, fontWeight: 600, color: COLORS.ink, marginBottom: 3 }}>{item.label}</div>
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted }}>{item.sub}</div>
+              <div key={item.id} className="tap" onClick={() => goToScreen(item.id)} style={{ background: COLORS.surface, borderRadius: 14, padding: "18px 16px", border: `1px solid ${COLORS.border}` }}>
+                <div style={{ fontSize: 20, marginBottom: 7, color: COLORS.accent }}>{item.icon}</div>
+                <div style={{ fontSize: 15, fontWeight: 600, color: COLORS.ink, marginBottom: 2 }}>{item.label}</div>
+                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: COLORS.muted }}>{item.sub}</div>
               </div>
             ))}
           </div>
-          <div style={{ padding: "0 20px", display: "flex", flexDirection: "column", gap: 10, marginBottom: 10 }}>
+
+          {/* ── SKINNY BUTTONS ── */}
+          <div style={{ padding: "0 20px", display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
             {[
+              { id: "courses", label: "Courses", sub: "Registration & drop dates", icon: "◻" },
               { id: "funding", label: "Funding", sub: "Aid, grants & stipends", icon: "◇" },
-              { id: "contacts", label: "Contacts", sub: "Who to reach out to", icon: "◎" },
               { id: "policies", label: "Policies", sub: "GPA, advising, probation, waivers", icon: "◦" },
+              { id: "contacts", label: "Contacts & Communications", sub: "Who to reach and where", icon: "◎" },
             ].map((item) => (
-              <div key={item.id} className="tap" onClick={() => goToScreen(item.id)} style={{ background: COLORS.surface, borderRadius: 14, padding: "15px 20px", border: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                  <div style={{ fontSize: 18, color: COLORS.accent, width: 24 }}>{item.icon}</div>
+              <div key={item.id} className="tap" onClick={() => goToScreen(item.id)} style={{ background: COLORS.surface, borderRadius: 12, padding: "12px 16px", border: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ fontSize: 15, color: COLORS.accent, width: 20 }}>{item.icon}</div>
                   <div>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: COLORS.ink, marginBottom: 1 }}>{item.label}</div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted }}>{item.sub}</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.ink, marginBottom: 1 }}>{item.label}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: COLORS.muted }}>{item.sub}</div>
                   </div>
                 </div>
-                <div style={{ fontSize: 18, color: COLORS.muted }}>›</div>
+                <div style={{ fontSize: 16, color: COLORS.muted }}>›</div>
               </div>
             ))}
           </div>
-          <div style={{ padding: "12px 24px 0", fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted, textAlign: "center" }}>
-            Looking for something not here?{" "}
-            <a href="https://northeastern.sharepoint.com/:w:/r/sites/IDaMPhDStudents/Shared%20Documents/General/Handbook/Student%20Handbook%20CAMD%20PhD_AY26.docx?d=we382d87c21d84d258562a9e5b0d1bd44&csf=1&web=1&e=L76IJV" target="_blank" rel="noreferrer" style={{ color: COLORS.accent, textDecoration: "underline" }}>Full Handbook</a>
+
+          {/* ── BOTTOM LINKS ── */}
+          <div style={{ padding: "0 20px", display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
+            <a href="https://northeastern.sharepoint.com/:w:/r/sites/IDaMPhDStudents/Shared%20Documents/General/Handbook/Student%20Handbook%20CAMD%20PhD_AY26.docx?d=we382d87c21d84d258562a9e5b0d1bd44&csf=1&web=1&e=L76IJV" target="_blank" rel="noreferrer" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.accent, textDecoration: "underline" }}>Handbook</a>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted }}>·</span>
+            <a href="https://northeastern.sharepoint.com/sites/CAMDHub/SitePages/Students/PhD-Resources.aspx" target="_blank" rel="noreferrer" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.accent, textDecoration: "underline" }}>PhD Hub</a>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted }}>·</span>
+            <a href="https://teams.microsoft.com/l/team/19%3AwATcDwT4uhLQ4oWXRluYwf1GT1M6WtBU0UF-6h-YSDg1%40thread.tacv2/conversations?groupId=e28261f3-b2e1-4038-a57f-dfcef002c39d&tenantId=a8eec281-aaa3-4dae-ac9b-9a398b9215e7" target="_blank" rel="noreferrer" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.accent, textDecoration: "underline" }}>Teams</a>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted }}>·</span>
+            <a href="https://camdphd.slack.com/archives/C03D0KFP8JU" target="_blank" rel="noreferrer" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.accent, textDecoration: "underline" }}>Slack</a>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted }}>·</span>
+            <span className="tap" onClick={() => goToScreen("changelog")} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.accent, textDecoration: "underline", cursor: "pointer" }}>Changelog</span>
           </div>
         </div>
       )}
@@ -691,32 +880,40 @@ export default function App() {
         </div>
       )}
 
-      {/* ── DEADLINES ── */}
-      {screen === "deadlines" && (
+      {/* ── TO-DOS ── */}
+      {screen === "todos" && (
         <div className="slide-in" style={{ padding: "0 0 100px" }}>
-          <Header title="Key Deadlines" onBack={goHome} />
+          <Header title="Program To-Dos" onBack={goHome} />
           <div style={{ padding: "0 20px" }}>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.muted, marginBottom: 20, lineHeight: 1.55 }}>Annual and recurring dates that are easy to miss but consequential.</div>
-            {deadlines.map((d, i) => (
-              <div key={i} style={{ marginBottom: 8 }}>
-                <div className="tap" onClick={() => setExpandedDeadline(expandedDeadline === i ? null : i)} style={{ background: COLORS.surface, borderRadius: expandedDeadline === i ? "12px 12px 0 0" : 12, padding: "16px 18px", border: `1px solid ${COLORS.border}`, borderBottom: expandedDeadline === i ? "none" : undefined, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
-                      <div style={{ fontSize: 15, fontWeight: 600, color: COLORS.ink }}>{d.title}</div>
-                      {d.recurring && <Tag label="Annual" color={COLORS.tag2} textColor="#1A5C2A" />}
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.muted, marginBottom: 20, lineHeight: 1.55 }}>
+              Time-sensitive actions from program administration. Complete by the deadline shown.
+            </div>
+            {todos.map((item, i) => {
+              const days = item.deadlineISO ? daysUntil(item.deadlineISO) : null;
+              const isUrgent = days !== null && days <= 7;
+              const borderColor = isUrgent ? COLORS.accent : COLORS.muted;
+              const badgeBg = isUrgent ? COLORS.accentLight : COLORS.tag1;
+              const badgeText = isUrgent ? COLORS.accent : "#1A4A7A";
+              return (
+                <div key={i} style={{ background: COLORS.surface, borderRadius: 14, padding: "16px 18px", marginBottom: 10, border: `0.5px solid ${COLORS.border}`, borderLeft: `3px solid ${borderColor}` }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 8 }}>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: COLORS.ink, lineHeight: 1.3, flex: 1, paddingRight: 10 }}>{item.title}</div>
+                    <div style={{ background: badgeBg, borderRadius: 6, padding: "3px 8px", flexShrink: 0 }}>
+                      <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 600, color: badgeText }}>{item.deadline}</span>
                     </div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.accent, fontWeight: 500 }}>{d.date}</div>
                   </div>
-                  <div style={{ color: COLORS.muted, fontSize: 16, marginLeft: 12, transform: expandedDeadline === i ? "rotate(90deg)" : "none", transition: "transform 0.15s" }}>›</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.muted, lineHeight: 1.55, marginBottom: item.url ? 12 : 0 }}>{item.description}</div>
+                  {item.url && (
+                    <a href={item.url} target="_blank" rel="noreferrer">
+                      <div className="tap" style={{ background: COLORS.ink, borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: "#FFF" }}>{item.buttonLabel}</span>
+                        <span style={{ fontSize: 14, color: "rgba(255,255,255,0.5)" }}>↗</span>
+                      </div>
+                    </a>
+                  )}
                 </div>
-                {expandedDeadline === i && (
-                  <div style={{ background: COLORS.surface, borderRadius: "0 0 12px 12px", padding: "4px 18px 16px", border: `1px solid ${COLORS.border}`, borderTop: "none" }}>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.ink, lineHeight: 1.6, marginTop: 10, marginBottom: d.formUrl ? 14 : 0 }}>{d.detail}</div>
-                    {d.formUrl && <a href={d.formUrl} target="_blank" rel="noreferrer"><FormButton label={d.formLabel} /></a>}
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -726,28 +923,160 @@ export default function App() {
         <div className="slide-in" style={{ padding: "0 0 100px" }}>
           <Header title="Funding" onBack={goHome} />
           <div style={{ padding: "0 20px" }}>
-            {fundingData.map((section, si) => (
-              <div key={si} style={{ marginBottom: 24 }}>
-                <SectionLabel>{section.category}</SectionLabel>
-                {section.items.map((item, ii) => (
-                  <div key={ii} style={{ background: COLORS.surface, borderRadius: 12, padding: "16px 18px", marginBottom: 8, border: `1px solid ${COLORS.border}` }}>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.ink, marginBottom: 6 }}>{item.title}</div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.muted, lineHeight: 1.55, marginBottom: item.formUrl ? 12 : 0 }}>{item.detail}</div>
-                    {item.formUrl && <a href={item.formUrl} target="_blank" rel="noreferrer"><FormButton label={item.formLabel} /></a>}
-                  </div>
-                ))}
+
+            {/* Flex Fellowship — program-specific, stays at top */}
+            <div style={{ background: COLORS.ink, borderRadius: 14, padding: "18px 20px", marginBottom: 24, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: -16, right: -16, width: 80, height: 80, borderRadius: "50%", background: "rgba(200,64,27,0.2)" }} />
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>Program funding</div>
+              <div style={{ fontSize: 17, fontWeight: 600, color: "#FFF", marginBottom: 4 }}>Flex Fellowship</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.5, marginBottom: 14 }}>
+                A funded semester for fieldwork, research, or creative practice. Available after completing coursework and qualifying exam. Apply at least 2 months before semester start — summer requests most likely to be approved.
               </div>
-            ))}
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.35)", marginBottom: 12 }}>
+                Notify program administration before agreeing to any external fellowship — critical for international students.
+              </div>
+              <a href={FORMS.flexFellowship} target="_blank" rel="noreferrer">
+                <div className="tap" style={{ background: COLORS.accent, borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: "#FFF" }}>Flex Fellowship Form</span>
+                  <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>↗</span>
+                </div>
+              </a>
+            </div>
+
+            {/* Fellowship discovery */}
+            <SectionLabel>Discover Funding Opportunities</SectionLabel>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.muted, lineHeight: 1.55, marginBottom: 6 }}>
+              Pre-built searches by research area across ProFellow, Google Alerts, Grants.gov, and federal fellowship programs. Tap your discipline to see links and example search queries.
+            </div>
+            <div style={{ background: COLORS.accentLight, borderRadius: 10, padding: "10px 14px", marginBottom: 20, borderLeft: `3px solid ${COLORS.accent}` }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.ink, lineHeight: 1.5 }}>
+                <span style={{ fontWeight: 500 }}>ProFellow</span> requires a free account.{" "}
+                <a href="https://www.profellow.com/sign-up/" target="_blank" rel="noreferrer" style={{ color: COLORS.accent }}>Create one here</a> if you don't have one — it's worth it for the full database of 2,800+ fellowships.
+              </div>
+            </div>
+
+            {disciplines.map((d) => {
+              const isOpen = expandedDiscipline === d.id;
+              const guideOpen = expandedFundingGuide === d.id;
+              return (
+                <div key={d.id} style={{ marginBottom: 8 }}>
+                  {/* Discipline header */}
+                  <div className="tap" onClick={() => { setExpandedDiscipline(isOpen ? null : d.id); if (isOpen) setExpandedFundingGuide(null); }} style={{ background: COLORS.surface, borderRadius: isOpen ? "12px 12px 0 0" : 12, padding: "14px 18px", border: `1px solid ${COLORS.border}`, borderBottom: isOpen ? "none" : undefined, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.ink }}>{d.name}</div>
+                    <div style={{ color: COLORS.muted, fontSize: 16, transform: isOpen ? "rotate(90deg)" : "none", transition: "transform 0.15s" }}>›</div>
+                  </div>
+
+                  {isOpen && (
+                    <div style={{ background: COLORS.surface, borderRadius: "0 0 12px 12px", padding: "4px 18px 16px", border: `1px solid ${COLORS.border}`, borderTop: "none" }}>
+
+                      {/* ProFellow */}
+                      <div style={{ marginTop: 12, marginBottom: 10 }}>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500, color: COLORS.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>ProFellow — search keywords</div>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted, lineHeight: 1.5, marginBottom: 8 }}>
+                          Search: <span style={{ color: COLORS.ink, fontStyle: "italic" }}>{d.profellowKeywords}</span>
+                        </div>
+                        <a href="https://www.profellow.com/fellowships/" target="_blank" rel="noreferrer">
+                          <SourceButton label="Search ProFellow Database" color={COLORS.tag1} textColor="#1A4A7A" />
+                        </a>
+                      </div>
+
+                      {/* Federal */}
+                      <div style={{ marginBottom: 10 }}>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500, color: COLORS.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>Federal Fellowship Programs</div>
+                        {d.federal.map((f, fi) => (
+                          <a key={fi} href={f.url} target="_blank" rel="noreferrer" style={{ display: "block", marginBottom: 6 }}>
+                            <SourceButton label={f.label} color={COLORS.tag2} textColor="#1A5C2A" />
+                          </a>
+                        ))}
+                      </div>
+
+                      {/* Grants.gov */}
+                      <div style={{ marginBottom: 10 }}>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500, color: COLORS.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>Federal Grants (Grants.gov)</div>
+                        <a href={`https://simpler.grants.gov/search?query=${encodeURIComponent(d.grantsQuery)}`} target="_blank" rel="noreferrer">
+                          <SourceButton label="Search Grants.gov" color={COLORS.tag3} textColor="#7A2A1A" />
+                        </a>
+                      </div>
+
+                      {/* Google Alerts */}
+                      <div style={{ marginBottom: 12 }}>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500, color: COLORS.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>Google Alerts — pre-built query</div>
+                        <a href={`https://www.google.com/alerts?q=${encodeURIComponent(d.alertQuery)}`} target="_blank" rel="noreferrer">
+                          <SourceButton label="Create Google Alert" color="#F0EDF5" textColor="#3A1A7A" />
+                        </a>
+                      </div>
+
+                      {/* Google Alerts guide — collapsed */}
+                      <div>
+                        <div className="tap" onClick={() => setExpandedFundingGuide(guideOpen ? null : d.id)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderTop: `1px solid ${COLORS.border}` }}>
+                          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 500, color: COLORS.muted }}>Get more from Google Alerts</div>
+                          <div style={{ color: COLORS.muted, fontSize: 13, transform: guideOpen ? "rotate(90deg)" : "none", transition: "transform 0.15s" }}>›</div>
+                        </div>
+                        {guideOpen && (
+                          <div style={{ paddingTop: 10 }}>
+                            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted, lineHeight: 1.55, marginBottom: 10 }}>
+                              Use quotes for exact phrases, OR to broaden, and specific terms like "fellowship" or "doctoral" to narrow. Try these queries:
+                            </div>
+                            {d.exampleQueries.map((q, qi) => (
+                              <a key={qi} href={`https://www.google.com/alerts?q=${encodeURIComponent(q)}`} target="_blank" rel="noreferrer">
+                                <div className="tap" style={{ background: COLORS.bg, borderRadius: 8, padding: "8px 12px", marginBottom: 6, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                  <div style={{ fontFamily: "monospace", fontSize: 11, color: COLORS.ink, lineHeight: 1.4, flex: 1, paddingRight: 8 }}>{q}</div>
+                                  <div style={{ color: COLORS.accent, fontSize: 12, flexShrink: 0 }}>↗</div>
+                                </div>
+                              </a>
+                            ))}
+                            <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 6 }}>
+                              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500, color: COLORS.muted, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 2 }}>Further reading</div>
+                              <a href="https://www.howtogeek.com/444477/how-to-master-google-alerts/" target="_blank" rel="noreferrer" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.accent, textDecoration: "underline" }}>How to Master Google Alerts — HowToGeek</a>
+                              <a href="https://mention.com/en/blog/how-to-set-up-google-alerts/" target="_blank" rel="noreferrer" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.accent, textDecoration: "underline" }}>Using Filters & Operators Effectively — Mention.com</a>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* ── CONTACTS ── */}
+      {/* ── CONTACTS & COMMUNICATIONS ── */}
       {screen === "contacts" && (
         <div className="slide-in" style={{ padding: "0 0 100px" }}>
-          <Header title="Contacts" onBack={goHome} />
+          <Header title="Contacts & Communications" onBack={goHome} />
           <div style={{ padding: "0 20px" }}>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.muted, marginBottom: 20, lineHeight: 1.5 }}>Not sure who to contact? Start with the Graduate Administrator for most questions.</div>
+
+            {/* Communications structure — expandable */}
+            <div style={{ marginBottom: 20 }}>
+              <div className="tap" onClick={() => setExpandedComms(!expandedComms)} style={{ background: COLORS.surface, borderRadius: expandedComms ? "12px 12px 0 0" : 12, padding: "16px 18px", border: `1px solid ${COLORS.border}`, borderBottom: expandedComms ? "none" : undefined, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: COLORS.ink, marginBottom: 2 }}>Communications Structure</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted }}>Where different types of information live</div>
+                </div>
+                <div style={{ color: COLORS.muted, fontSize: 16, transform: expandedComms ? "rotate(90deg)" : "none", transition: "transform 0.15s" }}>›</div>
+              </div>
+              {expandedComms && (
+                <div style={{ background: COLORS.surface, borderRadius: "0 0 12px 12px", border: `1px solid ${COLORS.border}`, borderTop: "none", overflow: "hidden" }}>
+                  {commsChannels.map((ch, i) => (
+                    <div key={i} style={{ padding: "14px 18px", borderTop: i > 0 ? `1px solid ${COLORS.border}` : "none", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: COLORS.ink, marginBottom: 2 }}>{ch.channel}</div>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted }}>{ch.purpose}</div>
+                      </div>
+                      <a href={ch.url} target="_blank" rel="noreferrer">
+                        <div style={{ background: COLORS.accentLight, borderRadius: 7, padding: "5px 10px", flexShrink: 0 }}>
+                          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500, color: COLORS.accent }}>{ch.linkLabel} ↗</span>
+                        </div>
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.muted, marginBottom: 16, lineHeight: 1.5 }}>Not sure who to contact? Start with the Graduate Administrator for most questions.</div>
             {contacts.map((c, i) => (
               <div key={i} style={{ background: COLORS.surface, borderRadius: 14, padding: "18px 20px", marginBottom: 10, border: `1px solid ${COLORS.border}` }}>
                 <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: COLORS.muted, marginBottom: 4 }}>{c.role}</div>
@@ -766,6 +1095,29 @@ export default function App() {
                     <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.accent }}>{c.email}</span>
                   </div>
                 </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── CHANGELOG ── */}
+      {screen === "changelog" && (
+        <div className="slide-in" style={{ padding: "0 0 100px" }}>
+          <Header title="Changelog" onBack={goHome} />
+          <div style={{ padding: "0 20px" }}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.muted, marginBottom: 20, lineHeight: 1.55 }}>
+              Significant content changes — new sections, removed content, structural updates. Regular calendar and deadline updates are not logged here.
+            </div>
+            {changelog.map((entry, i) => (
+              <div key={i} style={{ marginBottom: 24 }}>
+                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 600, color: COLORS.accent, marginBottom: 10, letterSpacing: "0.04em" }}>{entry.date}</div>
+                {entry.entries.map((line, li) => (
+                  <div key={li} style={{ display: "flex", gap: 10, marginBottom: 8, alignItems: "flex-start" }}>
+                    <div style={{ color: COLORS.border, marginTop: 4, fontSize: 10, flexShrink: 0 }}>—</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: COLORS.ink, lineHeight: 1.55 }}>{line}</div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
@@ -814,10 +1166,9 @@ export default function App() {
       <div style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 430, background: "rgba(247,244,239,0.92)", backdropFilter: "blur(12px)", borderTop: `1px solid ${COLORS.border}`, padding: "10px 0 24px", display: "flex", justifyContent: "space-around" }}>
         {[
           { id: "home", label: "Home", icon: "⌂" },
+          { id: "todos", label: "To-Dos", icon: "✓" },
           { id: "milestones", label: "Milestones", icon: "◈" },
           { id: "calendar", label: "Calendar", icon: "◷" },
-          { id: "courses", label: "Courses", icon: "◻" },
-          { id: "contacts", label: "Contacts", icon: "◎" },
         ].map((item) => (
           <div key={item.id} className="tap" onClick={() => goToScreen(item.id)} style={{ textAlign: "center", flex: 1 }}>
             <div style={{ fontSize: 18, color: screen === item.id ? COLORS.accent : COLORS.muted }}>{item.icon}</div>
@@ -906,6 +1257,14 @@ function MetaRow({ icon, label, value, border, accent }) {
         <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: COLORS.muted, marginBottom: 2, letterSpacing: "0.06em", textTransform: "uppercase" }}>{label}</div>
         <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: accent ? COLORS.accent : COLORS.ink, lineHeight: 1.4 }}>{value}</div>
       </div>
+    </div>
+  );
+}
+function SourceButton({ label, color, textColor }) {
+  return (
+    <div className="tap" style={{ background: color, borderRadius: 9, padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: textColor }}>{label}</div>
+      <div style={{ fontSize: 13, color: textColor, opacity: 0.6 }}>↗</div>
     </div>
   );
 }
