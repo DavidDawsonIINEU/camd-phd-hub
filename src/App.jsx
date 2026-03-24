@@ -25,8 +25,7 @@ const FORMS = {
   coeOverride: "https://coe.northeastern.edu/academics-experiential-learning/graduate-school-of-engineering/graduate-student-services/graduate-forms/",
 };
 
-// ── MOCK "TODAY" = April 3, 2026 for prototype purposes ──
-const TODAY = new Date(2026, 3, 3); // month is 0-indexed
+const TODAY = new Date();
 function daysUntil(dateStr) {
   const d = new Date(dateStr);
   const diff = Math.round((d - TODAY) / (1000 * 60 * 60 * 24));
@@ -320,93 +319,93 @@ const disciplines = [
   {
     id: "games", name: "Games",
     profellowKeywords: "game design, interactive media, serious games",
-    alertQuery: '"game design" fellowship OR grant doctoral',
-    grantsQuery: "game design research doctoral",
+    alertQuery: "game design fellowship",
+    grantsQuery: "interactive media",
     federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
-    exampleQueries: ['"game design" fellowship PhD 2026', '"serious games" OR "game studies" doctoral grant', '"interactive media" research fellowship residency'],
+    exampleQueries: ['"game design" fellowship -undergraduate', '"serious games" fellowship -undergraduate', '"interactive media" fellowship -undergraduate'],
   },
   {
     id: "xr", name: "Extended Reality (XR)",
     profellowKeywords: "virtual reality, augmented reality, extended reality, immersive media",
-    alertQuery: '"extended reality" OR "virtual reality" fellowship doctoral grant',
-    grantsQuery: "extended reality augmented virtual research doctoral",
+    alertQuery: "virtual reality fellowship",
+    grantsQuery: "virtual reality",
     federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
-    exampleQueries: ['"extended reality" OR "XR" fellowship doctoral 2026', '"virtual reality" OR "augmented reality" research grant PhD', '"immersive media" fellowship residency funding'],
+    exampleQueries: ['"virtual reality" fellowship -undergraduate', '"augmented reality" fellowship -undergraduate', '"immersive media" fellowship -undergraduate'],
   },
   {
     id: "art", name: "Art & Humanities",
     profellowKeywords: "arts, humanities, creative practice, fine arts",
-    alertQuery: '"arts fellowship" OR "humanities fellowship" doctoral research',
-    grantsQuery: "arts humanities doctoral fellowship research",
+    alertQuery: "arts fellowship",
+    grantsQuery: "creativity",
     federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
-    exampleQueries: ['"arts fellowship" OR "humanities fellowship" PhD 2026', '"creative practice" research grant doctoral residency', '"fine arts" OR "visual arts" doctoral fellowship funding'],
+    exampleQueries: ['"arts fellowship" -undergraduate', '"creative practice" fellowship -undergraduate', '"fine arts" fellowship -undergraduate'],
   },
   {
     id: "comms", name: "Communication & Journalism",
     profellowKeywords: "communication, journalism, media studies",
-    alertQuery: '"journalism fellowship" OR "communication research" doctoral grant',
-    grantsQuery: "journalism communication research doctoral fellowship",
+    alertQuery: "communication fellowship",
+    grantsQuery: "communication",
     federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
-    exampleQueries: ['"journalism fellowship" doctoral PhD 2026', '"media studies" OR "communication research" grant funding', '"science communication" fellowship doctoral residency'],
+    exampleQueries: ['"communication fellowship" -undergraduate', '"media studies" fellowship -undergraduate', '"journalism fellowship" -undergraduate'],
   },
   {
     id: "music", name: "Music",
     profellowKeywords: "music, musicology, sound studies, composition",
-    alertQuery: '"music research" OR "musicology" fellowship doctoral grant',
-    grantsQuery: "music research doctoral fellowship residency",
+    alertQuery: "music fellowship",
+    grantsQuery: "music",
     federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
-    exampleQueries: ['"music fellowship" OR "musicology" doctoral PhD 2026', '"sound studies" OR "music research" grant funding', '"composition" OR "ethnomusicology" fellowship residency'],
+    exampleQueries: ['"music fellowship" -undergraduate', '"sound studies" fellowship -undergraduate', '"musicology" fellowship -undergraduate'],
   },
   {
     id: "design", name: "Design",
     profellowKeywords: "design research, design studies, interdisciplinary design",
-    alertQuery: '"design research" fellowship OR grant doctoral',
-    grantsQuery: "design research doctoral fellowship",
+    alertQuery: "design fellowship",
+    grantsQuery: "design",
     federal: [
       { label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" },
       { label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" },
     ],
-    exampleQueries: ['"design research" fellowship PhD 2026', '"design studies" OR "interdisciplinary design" doctoral grant', '"design thinking" research fellowship residency funding'],
+    exampleQueries: ['"design fellowship" -undergraduate', '"design research" fellowship -undergraduate', '"interdisciplinary design" fellowship -undergraduate'],
   },
   {
     id: "architecture", name: "Architecture",
     profellowKeywords: "architecture, built environment, architectural history, urban design",
-    alertQuery: '"architecture fellowship" OR "architectural research" doctoral grant',
-    grantsQuery: "architecture research doctoral fellowship",
+    alertQuery: "architecture fellowship",
+    grantsQuery: "architecture",
     federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
-    exampleQueries: ['"architecture fellowship" doctoral PhD 2026', '"architectural history" OR "built environment" research grant', '"urban design" OR "spatial research" fellowship residency'],
+    exampleQueries: ['"architecture fellowship" -undergraduate', '"built environment" fellowship -undergraduate', '"urban design" fellowship -undergraduate'],
   },
   {
     id: "hci", name: "Human-Computer Interaction",
     profellowKeywords: "human-computer interaction, HCI, user experience, interaction design",
-    alertQuery: '"human-computer interaction" OR "HCI" fellowship doctoral grant',
-    grantsQuery: "human computer interaction doctoral fellowship research",
+    alertQuery: "HCI fellowship",
+    grantsQuery: "human computer interaction",
     federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
-    exampleQueries: ['"human-computer interaction" fellowship PhD 2026', '"HCI" OR "interaction design" doctoral grant funding', '"user experience" OR "UX research" fellowship residency'],
+    exampleQueries: ['"human-computer interaction" fellowship -undergraduate', '"interaction design" fellowship -undergraduate', '"user experience" fellowship -undergraduate'],
   },
   {
     id: "dataviz", name: "Data Visualization",
     profellowKeywords: "data visualization, information visualization, visual analytics",
-    alertQuery: '"data visualization" OR "information visualization" fellowship doctoral grant',
-    grantsQuery: "data visualization doctoral fellowship research",
+    alertQuery: "data visualization fellowship",
+    grantsQuery: "visualization",
     federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
-    exampleQueries: ['"data visualization" fellowship doctoral PhD 2026', '"information visualization" OR "visual analytics" grant funding', '"data science" research fellowship residency doctoral'],
+    exampleQueries: ['"data visualization" fellowship -undergraduate', '"information visualization" fellowship -undergraduate', '"visual analytics" fellowship -undergraduate'],
   },
   {
     id: "health", name: "Health",
     profellowKeywords: "health communication, public health, health technology, health humanities",
-    alertQuery: '"health research" fellowship doctoral grant',
-    grantsQuery: "health communication research doctoral fellowship",
+    alertQuery: "health fellowship",
+    grantsQuery: "disability",
     federal: [{ label: "NSF Graduate Research Fellowship", url: "https://www.nsfgrfp.org/" }],
-    exampleQueries: ['"health communication" OR "public health" fellowship PhD 2026', '"health technology" OR "digital health" doctoral grant funding', '"health humanities" fellowship research residency'],
+    exampleQueries: ['"health fellowship" -undergraduate', '"disability research" fellowship -undergraduate', '"aging" fellowship -undergraduate'],
   },
   {
     id: "theatre", name: "Theatre",
     profellowKeywords: "theatre, performance studies, dramatic arts",
-    alertQuery: '"theatre research" OR "performance studies" fellowship doctoral grant',
-    grantsQuery: "theatre performance studies doctoral fellowship",
+    alertQuery: "performance fellowship",
+    grantsQuery: "humanities",
     federal: [{ label: "NEH Fellowships", url: "https://www.neh.gov/grants/research/fellowships" }],
-    exampleQueries: ['"theatre fellowship" OR "performance studies" doctoral PhD 2026', '"dramatic arts" OR "theatre research" grant funding', '"live performance" OR "theatre history" fellowship residency'],
+    exampleQueries: ['"performance fellowship" -undergraduate', '"theatre research" fellowship -undergraduate', '"dramatic arts" fellowship -undergraduate'],
   },
 ];
 
@@ -995,14 +994,6 @@ export default function App() {
                         <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500, color: COLORS.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>Federal Grants (Grants.gov)</div>
                         <a href={`https://simpler.grants.gov/search?query=${encodeURIComponent(d.grantsQuery)}`} target="_blank" rel="noreferrer">
                           <SourceButton label="Search Grants.gov" color={COLORS.tag3} textColor="#7A2A1A" />
-                        </a>
-                      </div>
-
-                      {/* Google Alerts */}
-                      <div style={{ marginBottom: 12 }}>
-                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500, color: COLORS.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>Google Alerts — pre-built query</div>
-                        <a href={`https://www.google.com/alerts?q=${encodeURIComponent(d.alertQuery)}`} target="_blank" rel="noreferrer">
-                          <SourceButton label="Create Google Alert" color="#F0EDF5" textColor="#3A1A7A" />
                         </a>
                       </div>
 
