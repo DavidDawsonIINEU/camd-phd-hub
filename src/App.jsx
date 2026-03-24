@@ -276,9 +276,8 @@ const policies = [
 
 const mockEvents = [
   { day: 5, title: "PhD Design Lab", category: "Program", time: "2:00 PM", endTime: "3:30 PM", location: "Center for Design, Room 205", description: "Bi-weekly PhD Program Design Lab. All CAMD PhD students welcome.", url: "https://teams.microsoft.com", startISO: "20260405T180000Z", endISO: "20260405T193000Z" },
-  { day: 8, title: "Last Day to Drop with W", category: "Milestone", time: "Deadline", endTime: null, location: null, description: "Last day to drop a course with a W grade on transcript. See Course Registration for details.", url: "https://registrar.northeastern.edu/article/academic-calendar/", startISO: "20260408T000000Z", endISO: "20260408T235900Z" },
   { day: 10, title: "CfD Conversations Series", category: "CAMD", time: "4:00 PM", endTime: "6:00 PM", location: "ISEC, Room 655", description: "Center for Design monthly panel series. This session: AI and Design Research.", url: "https://camd.northeastern.edu/center-for-design/events/", startISO: "20260410T200000Z", endISO: "20260410T220000Z" },
-  { day: 12, title: "Last Day to Drop without W", category: "Milestone", time: "Deadline", endTime: null, location: null, description: "Last day to drop a course with no transcript record. See Course Registration for details.", url: "https://registrar.northeastern.edu/article/academic-calendar/", startISO: "20260412T000000Z", endISO: "20260412T235900Z" },
+  { day: 19, title: "Last Day to Withdraw with W", category: "Milestone", time: "Deadline", endTime: null, location: null, description: "Last day to withdraw from a full-semester spring course. A W grade appears on your transcript but does not affect GPA. You remain responsible for 100% of tuition. Withdraw via the Student Hub.", url: "https://registrar.northeastern.edu/article/academic-calendar/", startISO: "20260419T000000Z", endISO: "20260419T235900Z" },
   { day: 15, title: "Annual Review Deadline", category: "Milestone", time: "Due", endTime: null, location: null, description: "Submit your self-reflection and portfolio for the Annual Progress Review. Contact David Dawson II with questions.", url: null, startISO: "20260415T000000Z", endISO: "20260415T235900Z" },
   { day: 15, title: "Design Research Week", category: "CAMD", time: "All week", endTime: null, location: "Various CAMD venues", description: "Design Research Week showcasing design-led research. Keynotes, panels, workshops, exhibitions. Theme: Performing Futures.", url: "https://camd.northeastern.edu/events/design-research-week-2026/", startISO: "20260415T090000Z", endISO: "20260419T180000Z" },
   { day: 22, title: "Proposal Defense: [Student Name]", category: "Program", time: "1:00 PM", endTime: "3:30 PM", location: "ISEC, Room 136 (also on Zoom)", description: "Dissertation proposal defense open to the CAMD PhD community. RSVP via camdphd@northeastern.edu for Zoom link.", url: null, startISO: "20260422T170000Z", endISO: "20260422T193000Z" },
@@ -426,7 +425,7 @@ export default function App() {
           </div>
           <div style={{ padding: "12px 24px 0", fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted, textAlign: "center" }}>
             Looking for something not here?{" "}
-            <span style={{ color: COLORS.accent, textDecoration: "underline", cursor: "pointer" }}>Full Handbook (PDF)</span>
+            <a href="https://northeastern.sharepoint.com/:w:/r/sites/IDaMPhDStudents/Shared%20Documents/General/Handbook/Student%20Handbook%20CAMD%20PhD_AY26.docx?d=we382d87c21d84d258562a9e5b0d1bd44&csf=1&web=1&e=L76IJV" target="_blank" rel="noreferrer" style={{ color: COLORS.accent, textDecoration: "underline" }}>Full Handbook</a>
           </div>
         </div>
       )}
