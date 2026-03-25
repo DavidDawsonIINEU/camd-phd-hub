@@ -1081,18 +1081,20 @@ export default function App() {
               <a href={ICAL_ACADEMIC} onClick={() => setShowSubscribeSheet(false)}><CalButton icon="◎" label="Add Academic Calendar (webcal)" color={COLORS.muted} /></a>
             </div>
 
+            <div style={{ background: COLORS.bg, borderRadius: 10, padding: "12px 14px", border: `1px solid ${COLORS.border}`, marginBottom: 16 }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500, color: COLORS.muted, marginBottom: 6, letterSpacing: "0.06em", textTransform: "uppercase" }}>Academic Calendar feed URL</div>
+              <div style={{ fontFamily: "monospace", fontSize: 11, color: COLORS.ink, wordBreak: "break-all", userSelect: "all", lineHeight: 1.5 }}>25livepub.collegenet.com/calendars/Northeastern-Academic-Calendar.ics</div>
+            </div>
+            
             <SectionLabel>Northeastern Events Digest</SectionLabel>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: COLORS.muted, lineHeight: 1.5, marginBottom: 10 }}>
               Weekly or daily email digest of upcoming university events. Filter by college, event type, or department before subscribing.
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
-              <a href="https://calendar.northeastern.edu/digester/summaries/new" target="_blank" rel="noreferrer" onClick={() => setShowSubscribeSheet(false)}><CalButton icon="◎" label="Set up Events Digest" color="COLORS.muted" /></a>
+              <a href="https://calendar.northeastern.edu/digester/summaries/new" target="_blank" rel="noreferrer" onClick={() => setShowSubscribeSheet(false)}><CalButton icon="N" label="Set up Events Digest" color="COLORS.muted" /></a>
             </div>
 
-            <div style={{ background: COLORS.bg, borderRadius: 10, padding: "12px 14px", border: `1px solid ${COLORS.border}`, marginBottom: 16 }}>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500, color: COLORS.muted, marginBottom: 6, letterSpacing: "0.06em", textTransform: "uppercase" }}>Academic Calendar feed URL</div>
-              <div style={{ fontFamily: "monospace", fontSize: 11, color: COLORS.ink, wordBreak: "break-all", userSelect: "all", lineHeight: 1.5 }}>25livepub.collegenet.com/calendars/Northeastern-Academic-Calendar.ics</div>
-            </div>
+            
             <div className="tap" onClick={() => setShowSubscribeSheet(false)} style={{ textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: COLORS.muted, padding: "12px" }}>Dismiss</div>
           </div>
         </>
