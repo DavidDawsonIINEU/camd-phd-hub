@@ -100,7 +100,7 @@ const todos = [
     deadline: "March 31",
     deadlineISO: "2026-03-31",
     description: "Submit your summer project and assistantship rankings for the upcoming assignment process.",
-    url: "https://drdawson.sites.northeastern.edu/4804-2/",
+    url: "https://drdawson.sites.northeastern.edu/4740-2/",
     buttonLabel: "Submit Rankings",
   },
   {
@@ -858,7 +858,7 @@ export default function App() {
                   <div style={{ fontSize: 16, color: COLORS.muted, marginLeft: 12, flexShrink: 0 }}>↗</div>
                 </div>
               </a>
-              <a href="https://resdev.northeastern.edu/pivot-funding-search/" target="_blank" rel="noreferrer">
+              <a href="https://pivot.proquest.com/funding_main" target="_blank" rel="noreferrer">
                 <div className="tap" style={{ background: COLORS.surface, borderRadius: 12, padding: "14px 18px", border: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div>
                     <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.ink, marginBottom: 2 }}>Pivot-RP</div>
@@ -867,7 +867,7 @@ export default function App() {
                   <div style={{ fontSize: 16, color: COLORS.muted, marginLeft: 12, flexShrink: 0 }}>↗</div>
                 </div>
               </a>
-              <a href="https://northeastern.on.worldcat.org/v2/oclc/1103715907" target="_blank" rel="noreferrer">
+              <a href="https://link.ezproxy.neu.edu/login?url=https://grantstoindividuals.org" target="_blank" rel="noreferrer">
                 <div className="tap" style={{ background: COLORS.surface, borderRadius: 12, padding: "14px 18px", border: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div>
                     <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.ink, marginBottom: 2 }}>Candid / Foundation Directory</div>
