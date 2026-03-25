@@ -1091,7 +1091,7 @@ export default function App() {
               Weekly or daily email digest of upcoming university events. Filter by college, event type, or department before subscribing.
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
-              <a href="https://calendar.northeastern.edu/digester/summaries/new" target="_blank" rel="noreferrer" onClick={() => setShowSubscribeSheet(false)}><CalButton icon="N" label="Set up Events Digest" color="#4285F4" /></a>
+              <a href="https://calendar.northeastern.edu/digester/summaries/new" target="_blank" rel="noreferrer" onClick={() => setShowSubscribeSheet(false)}><CalButton icon="N" label="Set up Events Digest" color="#CC0000" /></a>
             </div>
 
             
